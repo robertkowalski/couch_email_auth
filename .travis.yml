@@ -2,7 +2,8 @@ language: node_js
 node_js:
   - "0.11"
   - "0.10"
-env:
-  - COUCHDB_BASE_URL="http://localhost:5984"
+
+before_script:
+  "./create_admin"
 services:
   - couchdb
