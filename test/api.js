@@ -6,9 +6,8 @@ var test = require('tape'),
     s = require('../lib/server'),
     request = require('request'),
     testRequest = require('./test_helper').testRequest,
-    couchDbBaseUrl = 'http://admin:secret@localhost:5984',
     config = require('../lib/config'),
-    db = require('nano')(couchDbBaseUrl + '/' + config.usersDb);
+    db = require('nano')(config.couchDbBaseUrl + '/' + config.usersDb);
 
 var address = '127.0.0.1', port = 0, server;
 
@@ -24,7 +23,7 @@ test('setup', function(t) {
     // setup CouchDB with test config
     request({
       method: 'PUT',
-      uri: couchDbBaseUrl + '/_config/couch_httpd_auth/authentication_db',
+      uri: config.couchDbBaseUrl + '/_config/couch_httpd_auth/authentication_db',
       body: '"' + config.usersDb + '"'
     }, function(err, response, body) {
       t.notOk(err, 'set CouchDB test configuation');
@@ -79,7 +78,7 @@ test('teardown', function(t) {
   // reset CouchDB config
   request({
     method: 'PUT',
-    uri: couchDbBaseUrl + '/_config/couch_httpd_auth/authentication_db',
+    uri: config.couchDbBaseUrl + '/_config/couch_httpd_auth/authentication_db',
     body: '"_users"'
   }, function(err, response, body) {
     t.notOk(err, 'reset CouchDB test configuation');
